@@ -91,18 +91,13 @@ class DiscordBot extends Discord.Client {
 
         let category = await require('../discordTools/SetupGuildCategory')(this, guild);
         await require('../discordTools/SetupGuildChannels')(this, guild, category);
-        // if (firstTime) {
-        //     await PermissionHandler.removeViewPermission(this, guild);
-        // }
-        // else {
-        //     await PermissionHandler.resetPermissions(this, guild);
-        // }
 
         // await require('../discordTools/SetupSettingsMenu')(this, guild);
-
-        instance.firstTime = false;
-        // if (firstTime) await PermissionHandler.resetPermissions(this, guild);
-
+        
+        if (firstTime) {
+            await PermissionHandler.resetPermissions(this, guild);
+            instance.firstTime = false;
+        }
         this.setInstance(guild.id, instance);
     }
 
