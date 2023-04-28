@@ -29,19 +29,15 @@ module.exports = {
 
         const category = await DiscordTools.getCategoryById(guild.id, instance.channelId.category);
 
-        await category.permissionOverwrites.edit(
-            instance.role === null ? guild.roles.everyone.id : instance.role, {
-            ViewChannel: true
-        });
+        await category.permissionOverwrites.edit(guild.roles.everyone.id, { ViewChannel: true });
 
         for (const [name, id] of Object.entries(instance.channelId)) {
-            if (name !== 'commands' && name !== 'teamchat') continue;
-
-            const channel = DiscordTools.getTextChannelById(guild.id, id);
-            await channel.permissionOverwrites.edit(
-                instance.role === null ? guild.roles.everyone.id : instance.role, {
-                SendMessages: true
-            });
+            if(name === 'category') continue;
+            let channel = DiscordTools.getTextChannelById(guild.id, id);
+            if(!channel) channel = DiscordTools.getTextChannelByName(guild.id, name);
+            
+            // client.log('INFO', JSON.stringify({ instanceChannelId: id, fetchedId: channel?.id }));
+            if(channel) await channel.permissionOverwrites.edit(guild.roles.everyone.id, { SendMessages: true });
         }
     },
 }

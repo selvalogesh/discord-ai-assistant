@@ -54,8 +54,7 @@ module.exports = {
                 channel = guild.channels.cache.get(channelId);
             }
             catch (e) {
-                Client.client.log(Client.client.intlGet(null, 'errorCap'),
-                    Client.client.intlGet(null, 'couldNotFindChannel', { channel: channelId }), 'error');
+                Client.client.log('ERROR', `Could not find channel: ${channelId}`, 'error');
             }
 
             if (channel && channel.type === Discord.ChannelType.GuildText) {
