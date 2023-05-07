@@ -8,6 +8,8 @@ const InstanceUtils = require('../util/instanceUtils.js');
 const discordMessages = require('../discordTools/discordMessages.js');
 const { aiRemoveHfUserIfExists } = require('../handlers/aiModelHandler.js');
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 module.exports = {
     name: 'credentials',
 
@@ -46,10 +48,6 @@ module.exports = {
                 showCredentials(client, interaction);
                 break;
             }
-            case 'set_hoster': {
-                setHosterCredentials(client, interaction);
-                break;
-            }
             default: {
                 break;
             }
@@ -70,7 +68,6 @@ async function addCredentials(client, interaction) {
     const hfTokenKey = interaction.options.getString('hf_token_key').trim();
 
     try {
-        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
         await interaction.editReply(DiscordEmbeds.getActionInfoEmbed(0, 'Checking credentials please wait...'));
         await sleep(700);
         const { name: hfUserName } = await whoAmI({credentials: { accessToken: hfTokenKey }});
@@ -90,7 +87,7 @@ async function addCredentials(client, interaction) {
     InstanceUtils.writeCredentialsFile(guildId, credentials);
 
     const message = `Huggingface Credentials added for user: ${userName}!`;
-    await interaction.editReply(DiscordEmbeds.getActionInfoEmbed(0, message));
+    await interaction.followUp(DiscordEmbeds.getActionInfoEmbed(0, message, null, false));
     client.log('INFO', `Huggingface Credentials added for guildId: ${guildId} userId: ${userId}!`);
 }
 
@@ -99,6 +96,8 @@ async function removeCredentials(client, interaction) {
     const { guildId, credentials, userId, userName } = await getUserAndCredentialsInfo(interaction);
     if(!guildId || !userId || !userName || !credentials) return;
     
+    await interaction.editReply(DiscordEmbeds.getActionInfoEmbed(0, 'Removing credentials please wait...'));
+    await sleep(700);
     if (!credentials[userId]) {
         const content = discordMessages.getCredentialsNotFoundMessage(userName);
         await interaction.editReply(content);
@@ -111,7 +110,7 @@ async function removeCredentials(client, interaction) {
     aiRemoveHfUserIfExists(guildId, userId);
 
     const message = `Huggingface Credentials for user: ${userName} was removed successfully!`;
-    await interaction.editReply(DiscordEmbeds.getActionInfoEmbed(0, message));
+    await interaction.followUp(DiscordEmbeds.getActionInfoEmbed(0, message, null, false));
     client.log('INFO', `Huggingface Credentials removed for guildId: ${guildId} userId: ${userId}.`);
 }
 
