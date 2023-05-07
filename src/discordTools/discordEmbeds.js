@@ -48,8 +48,8 @@ module.exports = {
     },
 
     getHelpEmbed: function (guildId) {
-        const credentials = `${repo}/blob/master/src/resources/docs/credentials.md`;
-        const commands = `${repo}/blob/master/src/resources/docs/commands.md`;
+        const credentials = `${repo}/blob/master/docs/credentials.md`;
+        const commands = `${repo}/blob/master/docs/commands.md`;
 
         const description =
             `→ [${"How-to Register Credentials"}](${credentials})\n` +
