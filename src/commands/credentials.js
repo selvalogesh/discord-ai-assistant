@@ -7,6 +7,7 @@ const DiscordEmbeds = require('../discordTools/discordEmbeds.js');
 const InstanceUtils = require('../util/instanceUtils.js');
 const discordMessages = require('../discordTools/discordMessages.js');
 const { aiRemoveHfUserIfExists } = require('../handlers/aiModelHandler.js');
+const { getTextChannelByName } = require('../discordTools/discordTools.js');
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -86,8 +87,14 @@ async function addCredentials(client, interaction) {
 
     InstanceUtils.writeCredentialsFile(guildId, credentials);
 
-    const message = `Huggingface Credentials added for user: ${userName}!`;
-    await interaction.followUp(DiscordEmbeds.getActionInfoEmbed(0, message, null, false));
+    const commandsChannel = await getTextChannelByName(guildId, 'commands');
+    const textChannel = await getTextChannelByName(guildId, 'teamchat');
+    const addedMessage = DiscordEmbeds.getActionInfoEmbed(0, `Huggingface Credentials added for user: ${userName}.`, null, false);
+    const introMessage = discordMessages.getIntroMessage(userName);
+
+    await commandsChannel.send(addedMessage);
+    await textChannel.send(introMessage);
+    
     client.log('INFO', `Huggingface Credentials added for guildId: ${guildId} userId: ${userId}!`);
 }
 
@@ -97,7 +104,7 @@ async function removeCredentials(client, interaction) {
     if(!guildId || !userId || !userName || !credentials) return;
     
     await interaction.editReply(DiscordEmbeds.getActionInfoEmbed(0, 'Removing credentials please wait...'));
-    await sleep(700);
+    await sleep(1000);
     if (!credentials[userId]) {
         const content = discordMessages.getCredentialsNotFoundMessage(userName);
         await interaction.editReply(content);
@@ -108,9 +115,13 @@ async function removeCredentials(client, interaction) {
     InstanceUtils.writeCredentialsFile(guildId, newCredentials);
 
     aiRemoveHfUserIfExists(guildId, userId);
+    
+    await interaction.editReply(DiscordEmbeds.getActionInfoEmbed(0, `Removed credentials for user: ${userName}.`));
 
-    const message = `Huggingface Credentials for user: ${userName} was removed successfully!`;
-    await interaction.followUp(DiscordEmbeds.getActionInfoEmbed(0, message, null, false));
+    const commandsChannel = await getTextChannelByName(guildId, 'commands');
+    const removedMessage = DiscordEmbeds.getActionInfoEmbed(1, `Huggingface credentials removed for user: ${userName}.`, null, false);
+    await commandsChannel.send(removedMessage);
+
     client.log('INFO', `Huggingface Credentials removed for guildId: ${guildId} userId: ${userId}.`);
 }
 

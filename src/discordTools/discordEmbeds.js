@@ -1,10 +1,7 @@
 const Discord = require('discord.js');
 const { repository: { repo } } = require('../../package.json');
 
-const Client = require('../../index.ts');
 const Constants = require('../util/constants.js');
-const DiscordTools = require('./discordTools.js');
-const InstanceUtils = require('../util/instanceUtils.js');
 
 module.exports = {
     getEmbed: function (options = {}) {
@@ -47,7 +44,7 @@ module.exports = {
         });
     },
 
-    getHelpEmbed: function (guildId) {
+    getHelpEmbed: function () {
         const credentials = `${repo}/blob/master/docs/credentials.md`;
         const commands = `${repo}/blob/master/docs/commands.md`;
 
