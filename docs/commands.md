@@ -14,14 +14,14 @@ Slash Command | Description
 
 ## **/credentials**
 
-> **Add/Remove the FCM Credentials for the user account.**
+> **Add/Remove the Huggingface Credentials for the user account.**
 
 Subcommand | Options | Description | Required
 ---------- | ------- | ----------- | --------
 `add` | &nbsp; | Add Huggingface Token. | &nbsp;
 &nbsp; | `hf_token_key` | Private Key. | `True`
-`remove` | &nbsp; | Remove FCM Credentials. | &nbsp;
-`show` | &nbsp; | Show all registered FCM Credentials. | &nbsp;
+`remove` | &nbsp; | Remove Huggingface Credentials. | &nbsp;
+`show` | &nbsp; | Show all registered Huggingface Credentials. | &nbsp;
 
 
 ## **/help**

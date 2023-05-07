@@ -21,7 +21,7 @@ module.exports = {
                 module.exports.getButton({
                     style: Discord.ButtonStyle.Link,
                     label: 'HOW TO REGISTER',
-                    url: `${repo}/blob/master/src/resources/docs/credentials.md`,
+                    url: `${repo}/blob/master/docs/credentials.md`,
                 }),
                 module.exports.getButton({
                     style: Discord.ButtonStyle.Link,
