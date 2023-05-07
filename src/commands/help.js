@@ -10,7 +10,7 @@ module.exports = {
 			.setDescription('Display help message.');
 	},
 	async execute(client, interaction) {
-		const content = DiscordMessages.getHelpMessage(interaction);
+		const content = DiscordMessages.getHelpMessage();
 		return interaction.reply(content);
 	},
 };

@@ -24,9 +24,22 @@ module.exports = {
         return content;
     },
 
-    getHelpMessage: function (interaction) {
+    getIntroMessage: function (userName) {
+        const options = {
+            author: { name: 'OpenAssistant Instance', iconURL: 'https://raw.githubusercontent.com/selvalogesh/discord-ai-assistant/main/src/resources/images/bot.png', url: 'https://open-assistant.io/' },
+            title: `Hello, ${userName} !`,
+            description: `I am Open Assistant created from [OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5](https://huggingface.co/OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5)\n
+            How can I help you today ? 😊`,
+        };
         const content = {
-            embeds: [DiscordEmbeds.getHelpEmbed(interaction.guildId)],
+            embeds: [DiscordEmbeds.getEmbed(options)],
+        };
+        return content;
+    },
+
+    getHelpMessage: function () {
+        const content = {
+            embeds: [DiscordEmbeds.getHelpEmbed()],
             components: DiscordButtons.getHelpButtons(),
             ephemeral: true
         }
