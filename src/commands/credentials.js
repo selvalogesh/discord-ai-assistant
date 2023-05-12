@@ -13,7 +13,6 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 module.exports = {
     name: 'credentials',
-
     getData(client, guildId) {
         return new Builder.SlashCommandBuilder()
             .setName('credentials')
@@ -34,7 +33,7 @@ module.exports = {
     },
 
     async execute(client, interaction) {
-        if (!await client.validatePermissions(interaction)) return;
+        // if (!await client.validatePermissions(interaction)) return;
         await interaction.deferReply({ ephemeral: true });
         switch (interaction.options.getSubcommand()) {
             case 'add': {
